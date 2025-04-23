@@ -71,9 +71,11 @@ Base.show(io::IO, grid::Grid) = print(io, "Dimensions: $(grid.grid_length)\n",
 
 function resetGrid!(grid::Grid)::Nothing
     @threads for grid_point::GridPoint in grid.points
-        grid_point.mass      = 0.0
-        grid_point.momentum  = ZERO_VEC3
-        grid_point.force     = ZERO_VEC3
+        grid_point.mass          = 0.0
+        grid_point.momentum      = ZERO_VEC3
+        grid_point.force         = ZERO_VEC3
+        grid_point.velocity      = ZERO_VEC3
+        grid_point.velocity_next = ZERO_VEC3
     end
     
     return nothing
