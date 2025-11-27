@@ -8,13 +8,7 @@ using Dates
 using Logging
 # using BenchmarkTools
 
-# GMSH import on MUSE Lab computer
-# include("../.venv/Lib/gmsh.jl")
-include("/usr/local/lib/gmsh.jl")
-
-# GMSH import used on TACC
-# HOME = ENV["HOME"]
-# include("$HOME/gmsh/lib64/gmsh.jl")
+include("../.venv/lib64/gmsh.jl")
 
 # Small cutoff value near zero for small-mass or floating point comparisons
 const EPSILON = 1e-12
