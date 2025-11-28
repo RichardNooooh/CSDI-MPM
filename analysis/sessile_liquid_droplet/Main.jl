@@ -36,7 +36,7 @@ function parseCommandLineArguments()
                    "the program will crash. Also, note that paths in Julia depends on the directory " *
                    "the script is called from."
             arg_type = String
-            default = "test_h32_mp0.5/"
+            default = "h32_mp0.5/"
         "--t_init"
             help = "Defines the starting time of the simulation."
             arg_type = Float64

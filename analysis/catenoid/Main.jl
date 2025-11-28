@@ -25,7 +25,7 @@ function parseCommandLineArguments()
             help = "The directory that holds the simulation results. This will hold the OUTPUT_NAME directory. " *
                    "If the directory does not exist at runtime, this program will crash."
             arg_type = String
-            default = "output/analysis_refactored/catenoid/"
+            default = "output/analysis/catenoid/"
         "--output_name"
             help = "The name of the directory for the simulation results. The resulting path will " *
                    "then be DEST/OUTPUT_NAME/. If this directory does not exist at runtime, " *
