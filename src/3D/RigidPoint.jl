@@ -1,4 +1,4 @@
-mutable struct RigidPoint
+mutable struct RigidPoint # this is not fully implemented in 3D - refer to 2D code.
     velocity::Vec3{Float64}
 
     # Dirichlet Boundary Conditions

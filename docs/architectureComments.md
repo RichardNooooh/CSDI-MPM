@@ -1,8 +1,8 @@
 # General comments on the code architecture
 
-## Lack of common Julia features
+## Repeated code and lack of common Julia features
 
-This code was developed for people who are not familiar with software development, so I purposely avoided using this like modules, abstract types, and the other peculiar facets of Julia that are not easily understandable (although I made an exception with the use of `Union` in `GmshVtkIO.jl`).
+This code was developed for people who are not familiar with software development, so I purposely avoided using this like modules, abstract types, and the other peculiar facets of Julia that are not easily understandable (although I made an exception with the use of `Union` in `GmshVtkIO.jl`). As a side effect, there's a good amount of repeated code here (`src/2D`, `src/3D`, and `src/3DMembrane`) that is far less than ideal. 
 
 Unfortunately, by avoiding modules and using the `include()` functionality seems to make code completion difficult to configure, and I never managed to get it working well with this codebase. If you manage to get it working, I'll greatly appreciate it if you post a GitHub issue for documentation.
 

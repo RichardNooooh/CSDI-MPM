@@ -10,7 +10,15 @@ include("GmshVtkIO.jl")
 
 """
 Initializes the grid with rollers on all 6 bounding planes of the grid,
-adding extra cells on the border
+adding extra cells on the border. `num_extra_cells` should be at least 1 to
+prevent "Index out of bounds" errors at boundary.
+
+# Arguments
+- `arguments::Dict{String,Any}`: arguments for configuring grid size and number of cells
+- `num_extra_cells::Int64`: number of extra grid cells on far boundary
+
+# Output
+- Returns initialized `Grid` object
 """
 function initializeGrid(arguments::Dict{String,Any}; num_extra_cells::Int64=1)::Grid
     @info("Initializing 3D $(arguments["simulation_name"]) Simulation")
@@ -49,6 +57,7 @@ Initializes the simulation with the material domain and surface domain.
 - `arguments::Dict{String, Any}`: a dictionary of parameters
 - `setBulkParameters!::Function`: a function that initializes the material domain with parameters. Takes in (material_domain, grid, arguments).
 - `setSurfaceParameters!::Function`: a function that initializes the surface domain with parameters. Takes in (surface_domain, grid, arguments).
+- `get_active_subset::Bool`: controls whether `active_surface_domain` is calculated
 
 # Output
 - Material domain
@@ -79,6 +88,12 @@ end
 
 """
 Initializes the output folder directory, returning the directory names
+
+# Arguments
+- `arguments::Dict{String, Any}`: a dictionary of parameters
+
+# Output
+- Path names of newly created output subfolders
 """
 function initializeOutputDirectory(arguments::Dict{String,Any})::Tuple{String,String,String}
     @info("Creating output file structure in $(arguments["dest"])")
@@ -127,9 +142,9 @@ function runMPM!(arguments::Dict{String,Any}, grid::Grid,
     timeScaleFunctionBulk::Function, timeScaleFunctionSurface::Function,
     recordVtkFiles!::Function;
     start_index::Int64=Int64(arguments["t_init"] / arguments["t_delta"]))::Int64
+
     t_init::Float64, dt::Float64, t_final::Float64 = arguments["t_init"], arguments["t_delta"], arguments["t_final"]
     t_record::Int64 = arguments["t_record"]
-
     t_index::Int64 = start_index
     v_alpha::Float64 = arguments["v_alpha"]
 
@@ -168,11 +183,24 @@ end
 
 """
 Records the setup for the material/surface domains, grid, and physical parameters to a file.
+    
+# Arguments
+- `material_domain::Vector{MaterialPoint}`: a vector of `MaterialPoint`s
+- `surface_domain::Vector{SurfacePoint}`: a vector of `SurfacePoint`s
+- `active_surface_domain::Vector{SurfacePoint}`: a subset of `surface_domain` that will contribute nonzero forces to the grid
+- `grid::Grid`: the background grid
+- `arguments::Dict{String, Any}`: a dictionary of parameters
+- `destination_folder::String`: directory to output setup file
+- `extra_details::String`: string for additional details of setup
+
+# Output
+- Nothing
 """
 function recordInitialSetupInfo(material_domain::Vector{MaterialPoint},
     surface_domain::Vector{SurfacePoint},
     active_surface_domain::Vector{SurfacePoint},
     grid::Grid, arguments::Dict{String,Any}, destination_folder::String, extra_details::String)::Nothing
+
     mass_volume::Vec2{Float64} = Folds.sum(Vec2{Float64}(material_point.mass, material_point.volume_init)
                                            for material_point::MaterialPoint in material_domain)
     mass::Float64, volume::Float64 = mass_volume
@@ -249,6 +277,4 @@ function recordInitialSetupInfo(material_domain::Vector{MaterialPoint},
 
     return nothing
 end
-
-
 

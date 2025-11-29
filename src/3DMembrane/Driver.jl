@@ -8,7 +8,15 @@ include("GmshVtkIO.jl")
 
 """
 Initializes the grid with rollers on all 6 bounding planes of the grid,
-adding extra cells on the border
+adding extra cells on the border. `num_extra_cells` should be at least 1 to
+prevent "Index out of bounds" errors at boundary.
+
+# Arguments
+- `arguments::Dict{String,Any}`: arguments for configuring grid size and number of cells
+- `num_extra_cells::Int64`: number of extra grid cells on far boundary
+
+# Output
+- Returns initialized `Grid` object
 """
 function initializeGrid(arguments::Dict{String,Any}; num_extra_cells::Int64=1)::Grid
     @info("Initializing 3D $(arguments["simulation_name"]) Simulation")
@@ -85,6 +93,12 @@ end
 
 """
 Initializes the output folder directory, returning the directory names
+
+# Arguments
+- `arguments::Dict{String, Any}`: a dictionary of parameters
+
+# Output
+- Path names of newly created output subfolders
 """
 function initializeOutputDirectory(arguments::Dict{String,Any})::Tuple{String,String,String}
     @info("Creating output file structure in $(arguments["dest"])")
@@ -301,6 +315,18 @@ end
 
 """
 Records the setup for the membrane domain, grid, and physical parameters to a file.
+
+# Arguments
+- `material_domain::Vector{MaterialPoint}`: a vector of `MaterialPoint`s
+- `surface_domain::Vector{SurfacePoint}`: a vector of `SurfacePoint`s
+- `active_surface_domain::Vector{SurfacePoint}`: a subset of `surface_domain` that will contribute nonzero forces to the grid
+- `grid::Grid`: the background grid
+- `arguments::Dict{String, Any}`: a dictionary of parameters
+- `destination_folder::String`: directory to output setup file
+- `extra_details::String`: string for additional details of setup
+
+# Output
+- Nothing
 """
 function recordInitialSetupInfo(membrane_domain::Vector{MembranePoint},
     grid::Grid, arguments::Dict{String,Any}, destination_folder::String, extra_details::String)::Nothing

@@ -25,7 +25,7 @@ mutable struct GridPoint
             ZERO_VEC2,                  # momentum_next
             ZERO_VEC2,                  # velocity
             ZERO_VEC2,                  # velocity_next
-            ZERO_VEC2,    # force
+            ZERO_VEC2,                  # force
             0.0,                        # mass
             Vec2{Bool}(false, false),   # is_fixed
             SpinLock())                 # lock
