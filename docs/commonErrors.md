@@ -18,4 +18,7 @@ You may benefit from a finer mesh (either the grid and/or the material).
 
 ## Pressure oscillations or volumetric locking
 
-This is a common phenomena in explicit timestep MPM due to high stiffness and/or the null space error. You'll have to relax the material parameters to mitigate it or modify the "points per cell" ratio (see paper).
+This is a common phenomena in explicit timestep MPM due to high stiffness and/or the null space error. If these oscillations swing wildly between positive and negative values, you'll have to relax the material parameters to mitigate it or modify the "points per cell" ratio (see paper).
+
+You may also see smaller oscillations or "noise" in the geometry/pressures if you are using FLIP velocity updates. FLIP is known to be less stable than PIC velocity updates, while preserving energy much better than PIC. I do not recommend using FLIP updates for *any* of the membrane point method examples due to this.
+
